@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>年齢からわかる学校歴 | 小学校〜大学</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: #f7f8fa;
+      color: #222;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+    /* 広告枠 */
+    .ad-area {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .ad-label {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .ad-placeholder {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 24px 16px;
+      color: #666;
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .input-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    input[type="number"] {
+      width: 100px;
+      padding: 12px 16px;
+      font-size: 1.2rem;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    #result {
+      display: none;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: #e5e7eb;
+      border-radius: 2px;
+    }
+    .item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .item:last-child {
+      margin-bottom: 0;
+    }
+    .item::before {
+      content: "";
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      background: #3b82f6;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+    .school-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+      color: #1e40af;
+    }
+    .years {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+    }
+    .year-box {
+      background: #f0f9ff;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+    .year-label {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .note {
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .affiliate-note {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- 広告エリア（ここにAmazonのコードを貼る） -->
+    <div class="ad-area">
+      <div class="ad-label">アフィリエイト広告</div>
+      <div class="ad-placeholder">
+        <!-- ここにAmazonアソシエイトのバナーや商品リンクを貼ってください -->
+        Amazon広告をここに配置<br>
+        <small>（例：学習関連・ライフスタイル商品など）</small>
+      </div>
+    </div>
+
+    <h1>年齢からわかる学校歴</h1>
+    <p class="subtitle">小学校から大学まで、入学・卒業年が一目でわかります</p>
+
+    <div class="card">
+      <div class="input-group">
+        <label for="age">現在の年齢</label>
+        <input type="number" id="age" min="6" max="80" placeholder="例: 25">
+        <button onclick="calculate()">表示する</button>
+      </div>
+    </div>
+
+    <div class="card" id="result">
+      <div class="timeline" id="timeline"></div>
+      <p class="note">※ 標準的な進学スケジュールで計算しています（留年・飛び級なし）</p>
+    </div>
+
+    <p class="affiliate-note">
+      当サイトはアフィリエイトプログラムに参加しています。<br>
+      表示されている広告はAmazonなどの成果報酬型広告です。
+    </p>
+  </div>
+
+  <script>
+    const currentYear = 2026; // 現在の年
+
+    function calculate() {
+      const ageInput = document.getElementById('age');
+      const age = parseInt(ageInput.value);
+
+      if (!age || age < 6 || age > 80) {
+        alert('6歳から80歳の間で入力してください');
+        return;
+      }
+
+      // おおよその生まれ年
+      const birthYear = currentYear - age;
+
+      // 標準的なスケジュール（日本）
+      const schools = [
+        {
+          name: '小学校',
+          enter: birthYear + 6,
+          graduate: birthYear + 12
+        },
+        {
+          name: '中学校',
+          enter: birthYear + 12,
+          graduate: birthYear + 15
+        },
+        {
+          name: '高校',
+          enter: birthYear + 15,
+          graduate: birthYear + 18
+        },
+        {
+          name: '大学',
+          enter: birthYear + 18,
+          graduate: birthYear + 22
+        }
+      ];
+
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = schools.map(school => `
+        <div class="item">
+          <div class="school-name">${school.name}</div>
+          <div class="years">
+            <div class="year-box">
+              <div class="year-label">入学</div>
+              <strong>${school.enter}年</strong>
+            </div>
+            <div class="year-box">
+              <div class="year-label">卒業</div>
+              <strong>${school.graduate}年</strong>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('result').style.display = 'block';
+    }
+
+    // Enterキーでも計算できるように
+    document.getElementById('age').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+</body>
+</html>
